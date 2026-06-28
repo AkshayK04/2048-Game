@@ -1,0 +1,551 @@
+/* ==========================================
+   2048 GAME - MODERN LIGHT THEME
+   Part 1
+========================================== */
+
+:root{
+    --bg:#f6f7fb;
+    --board:#e9edf3;
+
+    --text:#222;
+    --text-light:#666;
+
+    --tile:#ffffff;
+    --tile-hover:#f5f7fa;
+
+    --button:#ffffff;
+    --button-hover:#f3f4f6;
+
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+
+    --radius:18px;
+}
+
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* BODY */
+
+body{
+    font-family:Inter,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+
+    min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    touch-action:none;
+}
+
+/* TITLE */
+
+h1{
+
+    margin-top:30px;
+    margin-bottom:15px;
+
+    font-size:42px;
+    font-weight:700;
+
+    letter-spacing:-1px;
+}
+
+/* TOP BAR */
+
+.top-bar{
+
+    width:min(520px,92vw);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:18px;
+
+    gap:15px;
+}
+
+/* SCORE */
+
+.score-box{
+
+    flex:1;
+
+    background:white;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    box-shadow:var(--shadow);
+
+    font-weight:700;
+
+    font-size:18px;
+}
+
+
+.label {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #777;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 4px;
+
+    text-transform: uppercase;
+
+}
+
+#score,
+#bestScore {
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    color: var(--text);
+
+}
+
+
+/* BUTTON */
+
+button{
+
+    background:white;
+
+    border:none;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:var(--shadow);
+
+    transition:.2s;
+}
+
+button:hover{
+
+    background:var(--button-hover);
+
+    transform:translateY(-2px);
+}
+
+button:active{
+
+    transform:scale(.97);
+}
+
+/* BOARD */
+
+#board{
+
+    width:min(500px,92vw);
+
+    aspect-ratio:1;
+
+    background:var(--board);
+
+    padding:12px;
+
+    border-radius:20px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:10px;
+
+    box-shadow:var(--shadow);
+}
+
+/* TILE */
+
+.tile{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:14px;
+
+    background:white;
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:#333;
+
+    user-select:none;
+
+    transition:
+        transform .15s,
+        background .2s,
+        color .2s;
+}
+
+.tile:hover{
+
+    transform:scale(1.04);
+}
+
+/* EMPTY TILE */
+
+.tile:empty{
+
+    background:rgba(255,255,255,.45);
+}
+
+/* TILE COLORS */
+
+.tile[data-value="2"]{
+    background:#ffffff;
+    color:#444;
+}
+
+.tile[data-value="4"]{
+    background:#f2f3f7;
+    color:#444;
+}
+
+.tile[data-value="8"]{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.tile[data-value="16"]{
+    background:#bfdbfe;
+    color:#1d4ed8;
+}
+
+.tile[data-value="32"]{
+    background:#93c5fd;
+    color:white;
+}
+
+.tile[data-value="64"]{
+    background:#60a5fa;
+    color:white;
+}
+
+.tile[data-value="128"]{
+    background:#3b82f6;
+    color:white;
+}
+
+.tile[data-value="256"]{
+    background:#2563eb;
+    color:white;
+}
+
+.tile[data-value="512"]{
+    background:#1d4ed8;
+    color:white;
+}
+
+.tile[data-value="1024"]{
+    background:#1e40af;
+    color:white;
+}
+
+.tile[data-value="2048"]{
+
+    background:linear-gradient(135deg,#FFD54F,#FF9800);
+
+    color:white;
+
+    box-shadow:
+        0 0 20px rgba(255,193,7,.45);
+}
+
+
+/* ==========================================
+   2048 GAME - MODERN LIGHT THEME
+   Part 2
+========================================== */
+
+/* ---------- SPAWN ANIMATION ---------- */
+
+.tile.spawn{
+    animation:pop .18s ease;
+}
+
+@keyframes pop{
+
+    0%{
+        transform:scale(.25);
+        opacity:0;
+    }
+
+    60%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+/* ---------- MERGE ANIMATION ---------- */
+
+.tile.merge{
+    animation:mergePop .22s ease;
+}
+
+@keyframes mergePop{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.18);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+/* ---------- BOARD SHAKE ---------- */
+
+#board.move{
+    animation:shake .12s ease;
+}
+
+@keyframes shake{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-3px);
+    }
+
+    50%{
+        transform:translateX(3px);
+    }
+
+    75%{
+        transform:translateX(-2px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+
+}
+
+/* ---------- TILE CLICK ---------- */
+
+.tile.clicked{
+
+    transform:scale(.93);
+
+    filter:brightness(.95);
+
+}
+
+/* ---------- BUTTON FOCUS ---------- */
+
+button:focus{
+
+    outline:3px solid #3b82f6;
+
+    outline-offset:3px;
+
+}
+
+/* ---------- TILE FOCUS ---------- */
+
+.tile:focus{
+
+    outline:3px solid #3b82f6;
+
+    outline-offset:2px;
+
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width:700px){
+
+    h1{
+
+        font-size:34px;
+
+        margin-top:24px;
+
+    }
+
+    .top-bar{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+        gap:12px;
+
+    }
+
+    .score-box{
+
+        text-align:center;
+
+        font-size:17px;
+
+    }
+
+    button{
+
+        width:100%;
+
+    }
+
+    #board{
+
+        width:94vw;
+
+        gap:8px;
+
+        padding:8px;
+
+    }
+
+    .tile{
+
+        font-size:24px;
+
+        border-radius:10px;
+
+    }
+
+}
+
+/* ---------- LARGE DESKTOP ---------- */
+
+@media (min-width:1200px){
+
+    #board{
+
+        width:560px;
+
+    }
+
+    .tile{
+
+        font-size:34px;
+
+    }
+
+}
+
+/* ---------- SMOOTH PAGE LOAD ---------- */
+
+body{
+
+    animation:fadeIn .45s ease;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ---------- BUTTON SHADOW ---------- */
+
+button{
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.08),
+        0 1px 2px rgba(0,0,0,.05);
+
+}
+
+/* ---------- TILE SHADOW ---------- */
+
+.tile{
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.8),
+        0 1px 2px rgba(0,0,0,.04);
+
+}
+
+/* ---------- BOARD SHADOW ---------- */
+
+#board{
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.10);
+
+}
+
+/* ---------- SCROLLBAR ---------- */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#d6d9df;
+
+    border-radius:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#f5f6f8;
+
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}

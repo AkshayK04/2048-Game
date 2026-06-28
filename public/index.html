@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>2048 Game</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+
+
+</head>
+
+<body class="light">
+
+    <!-- TITLE -->
+    <img src="Icon/game.svg" width="35" height="35">
+
+    <h1>2048</h1>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+
+        <!-- SCORE -->
+        <div class="score-box">
+            <div class="label">SCORE</div>
+            <div id="score">0</div>
+        </div>
+
+        <!-- BEST SCORE -->
+        <div class="score-box">
+            <div class="label">BEST</div>
+            <div id="bestScore">0</div>
+        </div>
+
+        <!-- NEW GAME -->
+        <button id="newGameBtn">
+            New Game
+        </button>
+
+    </div>
+
+
+    <!-- GAME OVER OVERLAY -->
+    <div id="gameOver" class="game-over hidden">
+
+        <div class="game-over-box">
+
+            <h2>Game Over</h2>
+
+            <p>Your Score: <span id="finalScore">0</span></p>
+
+            <button id="restartBtn">New Game</button>
+
+        </div>
+
+    </div>
+
+
+    <!-- GAME BOARD -->
+    <div id="board"></div>
+
+
+    <!-- CREDITS -->
+    <div class="credits">
+    © 2026 2048 Game | Built with ❤️ by Akshay K
+    </div>
+
+
+    <!-- SCRIPT -->
+    <script src="game.js"></script>
+
+</body>
+
+</html>
